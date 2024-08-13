@@ -1,0 +1,480 @@
+﻿@{
+    var poperjs = "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js";
+    ViewBag.Title = "Admin Dashboard";
+    Layout = null;
+    string[] titles = { "Danh sách phim", "Danh sách người dùng", "Danh sách khuyến mãi", "Báo cáo giao dịch" };
+    string[] ids = { "tt01", "tt02", "tt03", "tt04" };
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie App - Dashboard</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Sono:wght@200;300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="~/css/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+
+    <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
+
+    <link href="~/css/templatemo-pod-talk.css" rel="stylesheet">
+
+    <!-- Import Bootstrap v5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src=@poperjs integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+</head>
+
+<body class="container-fluid h-100">
+
+    <!-- Content -->
+    <div class="accordion my-2 py-2 border-top border-bottom">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@ids[0]"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    @titles[0]
+                </button>
+            </h2>
+            <div id="@ids[0]" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <table class="table my-4 table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Tên phim</th>
+                                <th scope="col">Giới hạn độ tuổi</th>
+                                <th scope="col">Ngày phát hành</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Doraemon Movie 2024: Nobita Và Bản Giao Hưởng Địa Cầu</td>
+                                <td>P</td>
+                                <td>24 tháng 5 năm 2024</td>
+                                <td>1</td>
+                                <td><button data-bs-toggle="modal" data-bs-target="#detail">...</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#@ids[1]" aria-expanded="false" aria-controls="collapseTwo">
+                    @titles[1]
+                </button>
+            </h2>
+            <div id="@ids[1]" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Ngày sinh</th>
+                                <th scope="col">Số điện thoại</th>
+                                <th scope="col">Giới tính</th>
+                                <th scope="col">Quyền hạn</th>
+                                <th scope="col">Thêm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">21130407</th>
+                                <td>21130407@st.hcmuaf.edu.vn</td>
+                                <td>21/05/2003</td>
+                                <td>0915870683</td>
+                                <td>Nam</td>
+                                <td>Quản trị</td>
+                                <td><button type="button" data-bs-toggle="modal"
+                                        data-bs-target="#user_more">...</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#@ids[2]" aria-expanded="false" aria-controls="collapseThree">
+                    @titles[2]
+                </button>
+            </h2>
+            <div id="@ids[2]" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @ids[2]+ @titles[2]
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#@ids[3]" aria-expanded="false" aria-controls="collapseThree">
+                    @titles[3]
+                </button>
+            </h2>
+            <div id="@ids[3]" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @ids[3]+ @titles[3]
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Content -->
+
+    <!-- Modals -->
+    <!-- Movies -->
+    <div class="modal fade" tabindex="-1" id="detail" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body container-fluid">
+                    <form id="movie_detail" class="row" action="Update" method="post">
+
+                        <!-- Title -->
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input name="ten_phim" type="text" class="form-control" id="floatingInput"
+                                    placeholder="VD: Doraemon"
+                                    value="Doraemon Movie 2024: Nobita Và Bản Giao Hưởng Địa Cầu">
+                                <label for="floatingInput">Tên phim</label>
+                            </div>
+                        </div>
+
+                        <!-- Release Date -->
+                        <div class="col-2">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" id="floatingInput" placeholder="VD: 21/05/2003"
+                                    value="2024-05-24">
+                                <label for="floatingInput">Ngày phát hành</label>
+                            </div>
+                        </div>
+
+                        <!-- Age -->
+                        <div class="col-2">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="floatingSelect"
+                                    aria-label="Floating label select example">
+                                    <option value="1" selected>P</option>
+                                    <option value="2">C13</option>
+                                    <option value="3">C18</option>
+                                </select>
+                                <label for="floatingSelect">Giới hạn độ tuổi</label>
+                            </div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="col-2">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="floatingSelect"
+                                    aria-label="Floating label select example">
+                                    <option value="1" selected>Hiển thị</option>
+                                    <option value="2">Ẩn</option>
+                                </select>
+                                <label for="floatingSelect">Trạng thái</label>
+                            </div>
+                        </div>
+
+                        <!-- Input Image -->
+                        <input id="img_poster" class="d-none" type="file" multiple accept=".jpg .png .jpeg">
+                        <label for="img_poster">
+                            <img src="https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_topic/horizontal_poster__1_-72c22681f3d2-1715248196841-TXI02OfZ.png?v=0&maxW=600"
+                                class="img-thumbnail col-6 mb-3" alt="...">
+                        </label>
+
+                        <!-- Accordion -->
+                        <div class="col-12 mb-3 accordion">
+                            <!-- Episodes -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                        Danh sách tập phim
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show"
+                                    data-bs-parent="#accordionExample">
+                                    <div class="accordion-body position-relative">
+                                        <table id="tbl_episode" class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Tập phim</th>
+                                                    <th scope="col">Liên kết</th>
+                                                    <th scope="col">Ngày phát hành</th>
+                                                    <th scope="col">Thời lượng</th>
+                                                    <th scope="col">Mô tả</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">mv1</th>
+                                                    <td>1</td>
+                                                    <td>
+                                                        <input type="url" class="form-control" checked
+                                                            value="https://pops.vn/series/doraemon-movie-2024-nobita-va-ban-giao-huong-dia-cau-663c9c71f3aaa20060ed6c00">
+                                                    </td>
+                                                    <td>
+                                                        <input type="date" class="form-control"
+                                                            placeholder="VD: 21-05-2003" value="2024-05-24" checked>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control"
+                                                            placeholder="VD: 10000 seconds" value=" 10000" checked />
+                                                    </td>
+                                                    <td>
+                                                        <textarea class="form-control"></textarea>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button type="button"
+                                            class="position-absolute bottom-0 end-0 btn btn-primary rounded-circle">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Genres -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Thể loại
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse"
+                                    data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <!-- Enter Genre types -->
+                                        <div class="border rounded-3 mb-3 p-3">
+
+                                            <!-- Tag -->
+                                            <div
+                                                class="text-capitalize border rounded-4 py-1 px-3 d-inline-flex align-items-center">
+                                                <p class="p-0 m-0 d-inline-flex">scientific</p>
+                                                <button class="btn btn-light rounded-circle ms-3 btn-sm"
+                                                    type="button">X</button>
+                                            </div>
+
+                                            <!-- Tag -->
+                                            <div
+                                                class="text-capitalize border rounded-4 py-1 px-3 d-inline-flex align-items-center">
+                                                <p class="p-0 m-0 d-inline-flex">action</p>
+                                                <button class="btn btn-light rounded-circle ms-3 btn-sm"
+                                                    type="button">X</button>
+                                            </div>
+
+                                            <!-- Tag -->
+                                            <div
+                                                class="text-capitalize border rounded-4 py-1 px-3 d-inline-flex align-items-center">
+                                                <p class="p-0 m-0 d-inline-flex">child</p>
+                                                <button class="btn btn-light rounded-circle ms-3 btn-sm"
+                                                    type="button">X</button>
+                                            </div>
+
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <input type="search" class="form-control" placeholder="Nhập thể loại"
+                                                aria-describedby="btn_genre">
+                                            <button id="btn_genre" type="button" class="input-group-text">Nhập</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stars -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseThree" aria-expanded="false"
+                                        aria-controls="collapseThree">
+                                        Diễn viên
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse"
+                                    data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <!-- Enter star details -->
+                                        <div class="border rounded-3 mb-3 p-3">
+
+                                            <!-- Tag -->
+                                            <div
+                                                class="text-capitalize border rounded-4 py-1 px-3 d-inline-flex align-items-center">
+                                                <p class="p-0 m-0 d-inline-flex">doraemon</p>
+                                                <button class="btn btn-light rounded-circle ms-3 btn-sm"
+                                                    type="button">X</button>
+                                            </div>
+
+                                            <!-- Tag -->
+                                            <div
+                                                class="text-capitalize border rounded-4 py-1 px-3 d-inline-flex align-items-center">
+                                                <p class="p-0 m-0 d-inline-flex">nobita</p>
+                                                <button class="btn btn-light rounded-circle ms-3 btn-sm"
+                                                    type="button">X</button>
+                                            </div>
+
+                                            <!-- Tag -->
+                                            <div
+                                                class="text-capitalize border rounded-4 py-1 px-3 d-inline-flex align-items-center">
+                                                <p class="p-0 m-0 d-inline-flex">shizuka</p>
+                                                <button class="btn btn-light rounded-circle ms-3 btn-sm"
+                                                    type="button">X</button>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="input-group mb-3">
+                                            <input type="search" class="form-control" placeholder="Nhập tên diễn viên"
+                                                aria-describedby="btn_genre">
+                                            <button id="btn_genre" type="button" class="input-group-text">Nhập</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                    style="height: 100px"></textarea>
+                                <label for="floatingTextarea2">Miêu tả</label>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Users -->
+    <div class="modal fade" id="user_more" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body container-fluid">
+                    <div class="row">
+                        <!-- id -->
+                        <div class="col-2">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">#</span>
+                                <span type="text" id="inpt_id" class="form-control opacity-75"
+                                    aria-describedby="basic-addon1">21130407</span>
+                            </div>
+                        </div>
+                        <!-- email -->
+                        <div class="col-5">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">@@</span>
+                                <input type="text" id="inpt_email" value="21130407@st.hcmuaf.edu.vn"
+                                    class="form-control" placeholder="Username" aria-label="Username"
+                                    aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <!-- fullname -->
+                        <div class="col-5">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Họ và tên</span>
+                                <input type="text" id="input_fullname" value="Võ Nguyễn Nhật Khương"
+                                    class="form-control" placeholder="Username" aria-label="Username"
+                                    aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <!-- birthday -->
+                        <div class="col-3">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Ngày sinh</span>
+                                <input type="date" id="inpt_birthday" value="2003-05-21" class="form-control"
+                                    placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <!-- phoneNumber -->
+                        <div class="col-3">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Số điện thoại</span>
+                                <input type="tel" id="inpt_phonenumber" value="0915870683" class="form-control"
+                                    placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <!-- sex -->
+                        <div class="col-3 d-flex align-items-center justify-content-evenly mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="radioSex" id="inpt_sex_male" checked>
+                                <label class="form-check-label" for="inpt_sex_male">
+                                    Nam
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="radioSex" id="inpt_sex_female">
+                                <label class="form-check-label" for="inpt_sex_female">
+                                    Nữ
+                                </label>
+                            </div>
+                        </div>
+                        <!-- permission -->
+                        <div class="col-3">
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="inputGroupSelect02">Quyền hạn</label>
+                                <select class="form-select" id="inpt_permission">
+                                    <option selected value="admin">Quản trị</option>
+                                    <option value="user">Người dùng</option>
+                                    <option value="denied">Từ chối</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modals -->
+
+    <script>
+        const myModal = document.getElementById('myModal')
+        const myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', () => {
+            myInput.focus()
+        })
+    </script>
+</body>
+
+</html>
