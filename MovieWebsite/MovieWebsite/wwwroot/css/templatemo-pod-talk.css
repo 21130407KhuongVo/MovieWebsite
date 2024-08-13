@@ -222,6 +222,19 @@ main {
   padding: 10px 20px;
 }
 
+.custom-btn-nav {
+    background: var(--custom-btn-bg-color);
+    border: 2px solid transparent;
+    border-radius: var(--border-radius-large);
+    color: var(--white-color);
+    font-family: var(--title-font-family);
+    font-size: 20px;
+    font-weight: var(--font-weight-semibold);
+    line-height: normal;
+    transition: all 0.3s;
+    padding: 10px 20px;
+}
+
 .custom-btn:hover {
   background: var(--custom-btn-bg-hover-color);
   color: var(--white-color);
@@ -305,8 +318,8 @@ main {
   display: inline-block;
   color: var(--section-bg-color);
   font-family: var(--title-font-family); 
-  font-size: var(--menu-font-size);
-  font-weight: var(--font-weight-medium);
+  font-size: 20px;
+  font-weight: 1000;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   position: relative;
