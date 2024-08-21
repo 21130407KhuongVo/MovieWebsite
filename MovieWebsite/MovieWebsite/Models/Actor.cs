@@ -8,7 +8,6 @@
         public bool Sex { get; set; }
         public string Country { get; set; }
         public string Avatar { get; set; }
-
         // Navigation Property
         public ICollection<MoviesActors> MoviesActors { get; set; }
     }
