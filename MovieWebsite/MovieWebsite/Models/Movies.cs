@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+
 namespace MovieWebsite.Models
 {
-    public class Movie
+    public class Movies
     {
         public Guid Id { get; set; }
         public string Title { get; set; }

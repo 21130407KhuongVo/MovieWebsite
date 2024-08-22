@@ -7,7 +7,27 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Models\Episodecs.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Remove="Views\Home\DTPage.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Include="wwwroot\js\.DS_Store" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="2.22.0" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
+	  <PackageReference Include="StackExchange.Redis" Version="2.8.0" />
 	</ItemGroup>
 
 </Project>
