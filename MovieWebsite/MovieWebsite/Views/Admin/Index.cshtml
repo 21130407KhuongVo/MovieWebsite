@@ -121,20 +121,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">21130407</th>
-                                <td>21130407@st.hcmuaf.edu.vn</td>
-                                <td>21/05/2003</td>
-                                <td>0915870683</td>
-                                <td>Nam</td>
-                                <td>Quản trị</td>
-                                <td>
-                                    <button type="button" data-bs-toggle="modal"
-                                            data-bs-target="#user_more">
-                                        ...
-                                    </button>
-                                </td>
-                            </tr>
+                            @foreach (var user in Model.UserList)
+                            {
+                                <tr>
+                                    <th scope="row">@user.Name</th>
+                                    <td>@user.Email</td>
+                                    <td>@user.BirthDate</td>
+                                    <td>@user.PhoneNumber</td>
+                                    <td>
+                                        <button type="button" data-bs-toggle="modal"
+                                                data-bs-target="#user_more">
+                                            ...
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                            
                         </tbody>
                     </table>
                     <button id="btn_addUser" type="button"
@@ -406,93 +408,87 @@
         </div>
     }
 
-    <!-- Users -->
-    <div class="modal fade" id="user_more" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body container-fluid">
-                    <div class="row">
-                        <!-- id -->
-                        <div class="col-2">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">#</span>
-                                <span type="text" id="inpt_id" class="form-control opacity-75"
-                                      aria-describedby="basic-addon1">21130407</span>
-                            </div>
-                        </div>
-                        <!-- email -->
-                        <div class="col-5">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">@@</span>
-                                <input type="text" id="inpt_email" value="21130407@st.hcmuaf.edu.vn"
-                                       class="form-control" placeholder="Username" aria-label="Username"
-                                       aria-describedby="basic-addon1">
-                            </div>
-                        </div>
-                        <!-- fullname -->
-                        <div class="col-5">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">Họ và tên</span>
-                                <input type="text" id="input_fullname" value="Võ Nguyễn Nhật Khương"
-                                       class="form-control" placeholder="Username" aria-label="Username"
-                                       aria-describedby="basic-addon1">
-                            </div>
-                        </div>
-                        <!-- birthday -->
-                        <div class="col-3">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">Ngày sinh</span>
-                                <input type="date" id="inpt_birthday" value="2003-05-21" class="form-control"
-                                       placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                            </div>
-                        </div>
-                        <!-- phoneNumber -->
-                        <div class="col-3">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">Số điện thoại</span>
-                                <input type="tel" id="inpt_phonenumber" value="0915870683" class="form-control"
-                                       placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                            </div>
-                        </div>
-                        <!-- sex -->
-                        <div class="col-3 d-flex align-items-center justify-content-evenly mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radioSex" id="inpt_sex_male" checked>
-                                <label class="form-check-label" for="inpt_sex_male">
-                                    Nam
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radioSex" id="inpt_sex_female">
-                                <label class="form-check-label" for="inpt_sex_female">
-                                    Nữ
-                                </label>
-                            </div>
-                        </div>
-                        <!-- permission -->
-                        <div class="col-3">
-                            <div class="input-group mb-3">
-                                <label class="input-group-text" for="inputGroupSelect02">Quyền hạn</label>
-                                <select class="form-select" id="inpt_permission">
-                                    <option selected value="admin">Quản trị</option>
-                                    <option value="user">Người dùng</option>
-                                    <option value="denied">Từ chối</option>
-                                </select>
-                            </div>
-                        </div>
+   @foreach (var user in Model.UserList){
+        <!-- Users -->
+        <div class="modal fade" tabindex="-1" id="user_@user.Id" data-bs-backdrop="static" data-bs-keyboard="false"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Mã người dùng: <b class="text-primary">@user.Id</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="btn_updateUse" type="button" class="btn btn-primary">Save changes</button>
+                    <div class="modal-body container-fluid">
+                        <form id="movie_detail_@user.Id" method="post" enctype="multipart/form-data" class="row" action="@Model.baseURL/api/auth/users" method="post">
+                            <!-- id -->
+                            <div class="col-2">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">#</span>
+                                    <span type="text" id="inpt_@user.Id" class="form-control opacity-75"
+                                          aria-describedby="basic-addon1"></span>
+                                </div>
+                            </div>
+                            <!-- email -->
+                            <div class="col-5">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">@@</span>
+                                    <input type="text" id="inpt_@user.Email" 
+                                           class="form-control" placeholder="Username" aria-label="Username"
+                                           aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <!-- fullname -->
+                            <div class="col-5">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Họ và tên</span>
+                                    <input type="text" id="input_@user.Name" 
+                                           class="form-control" placeholder="Username" aria-label="Username"
+                                           aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <!-- birthday -->
+                            <div class="col-3">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Ngày sinh</span>
+                                    <input type="date" id="inpt_@user.BirthDate"  class="form-control"
+                                           placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <!-- phoneNumber -->
+                            <div class="col-3">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Số điện thoại</span>
+                                    <input type="tel" id="inpt_@user.PhoneNumber" class="form-control"
+                                           placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            @* <!-- sex -->
+                            <div class="col-3 d-flex align-items-center justify-content-evenly mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radioSex" id="inpt_sex_male" checked>
+                                    <label class="form-check-label" for="inpt_sex_male">
+                                        Nam
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radioSex" id="inpt_sex_female">
+                                    <label class="form-check-label" for="inpt_sex_female">
+                                        Nữ
+                                    </label>
+                                </div>
+                            </div> *@
+                            <!-- permission -->
+                            y
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="btn_updateUser_@user.Id" type="button" class="btn btn-primary" forForm="@user.Id">Save changes</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
     <!-- End Modals -->
 
     <script>
