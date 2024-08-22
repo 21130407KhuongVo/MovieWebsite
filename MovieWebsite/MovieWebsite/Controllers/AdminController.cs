@@ -1,13 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MovieWebsite.Model.DomainModel;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace MovieWebsite.Controllers
 {
     public class AdminController : Controller
     {
+
         // GET: /Admin/Index
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             // get Movies
             // https://localhost:<port>/api/movie/
@@ -28,27 +32,18 @@ namespace MovieWebsite.Controllers
                 new SelectListItem{Text="Ẩn", Value="hide"},
                 new SelectListItem{Text="Hiển thị", Value="unhide"}
             };
+            List<Movies> movies = new List<Movies>();
 
-            // insert Movies. Get from API
-            model.MovieList = new List<Movies>{
-                new Movies{
-                    Id= Guid.NewGuid(),
-                    Title = "Doraemon Movie 2024: Nobita Và Bản Giao Hưởng Địa Cầu",
-                    Description = "this is Doraemon film",
-                    Status="Hiển thị",
-                    AgeRating = "P",
-                    Poster = "https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_topic/horizontal_poster__1_-72c22681f3d2-1715248196841-TXI02OfZ.png?v=0&maxW=600"
-                },
-                new Movies{
-                    Id=Guid.NewGuid(),
-                    Title = "The Boys",
-                    Description = "This is The boys film",
-                    Status="Ẩn",
-                    AgeRating = "T16",
-                    Poster = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsn2C9wOt_qlYjzFN5oLuwxoAdBhs3cTnUMQ&s"
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{model.baseURL}/api/movie"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    movies = JsonConvert.DeserializeObject<List<Movies>>(apiResponse);
                 }
-            };
+            }
 
+            model.MovieList = movies;
 
             return View(model);
         }
