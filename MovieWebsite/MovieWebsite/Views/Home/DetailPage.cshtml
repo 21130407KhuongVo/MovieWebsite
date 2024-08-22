@@ -25,6 +25,40 @@
     <link rel="stylesheet" href="/css/owl.theme.default.min.css">
 
     <link href="/css/templatemo-pod-talk.css" rel="stylesheet">
+    <style>
+        .embed-responsive {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        .embed-responsive-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #rating {
+            display: flex;
+            direction: rtl;
+        }
+        #rating input {
+            display: none;
+        }
+        #rating label {
+            font-size: 2em;
+            color: #ccc;
+            cursor: pointer;
+        }
+        #rating input:checked ~ label {
+            color: #f39c12;
+        }
+        #rating label:hover,
+        #rating label:hover ~ label {
+            color: #f39c12;
+        }
+    </style>
 </head>
 <body>
 
@@ -163,69 +197,13 @@
                 </div>
             </div>
         </header>
-
-<section class="movie-detail-section section-padding pb-0" id="section_2">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10 col-12">
-                        <div class="section-title-wrap mb-5">
-                            <h4 class="section-title">Movie Information</h4>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-4 col-12">
-                                <div class="movie-poster-wrap">
-                                    <img src="images/movies/movie1.jpg" class="img-fluid" alt="Movie Poster">
-                                </div>
-                            </div>
-
-                            <div class="col-lg-8 col-12">
-                                <div class="movie-info">
-                                    <h2 class="mb-2">Movie Title</h2>
-                                    <p><strong>Actor:</strong> Actor Name</p>
-                                    <p><strong>AgeRating:</strong> AgeRating</p>
-
-                                    <p>
-                                       Description of Movie
-                                    </p>
-
-                                    <div class="profile-block profile-detail-block d-flex flex-wrap align-items-center mt-5">
-                                        <div class="d-flex mb-3 mb-lg-0 mb-md-0">
-                                            <img src="images/profile/director.jpg" class="profile-block-image img-fluid" alt="Director Image">
-                                            <p>
-                                                Director Name
-                                                <img src="images/verified.png" class="verified-image img-fluid" alt="Verified">
-                                                <strong>Verified Director</strong>
-                                            </p>
-                                        </div>
-
-                                        <ul class="social-icon ms-lg-auto ms-md-auto">
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-instagram"></a>
-                                            </li>
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-twitter"></a>
-                                            </li>
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-whatsapp"></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
 <!-- Watch Movie Section -->
 <section class="watch-movie-section section-padding">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-12">
                 <div class="section-title-wrap mb-5">
-                    <h4 class="section-title">Watch Movie</h4>
+                    <h4 class="section-title">Tiêu Đề</h4>
                 </div>
 
                 <div class="movie-video-wrap">
@@ -233,6 +211,36 @@
                         <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/lHNbF7OSEsI" allowfullscreen></iframe>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="comments-section section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-12">
+                <div class="section-title-wrap mb-5">
+                    <h4 class="section-title">Bình Luận</h4>
+                </div>
+                <!-- Bắt đầu danh sách bình luận -->
+                <div class="comment-item d-flex mb-4">
+                    <div class="comment-avatar">
+                        <img src="avatar-url.jpg" class="img-fluid rounded-circle" alt="Avatar">
+                    </div>
+                    <div class="comment-content ms-3">
+                        <h5 class="comment-author mb-1">Tên người dùng</h5>
+                        <div class="comment-rating mb-1">
+                            <!-- Đánh giá sao -->
+                            <span class="text-warning">&#9733;</span> <!-- Sao đã đánh giá -->
+                            <span class="text-warning">&#9733;</span>
+                            <span class="text-warning">&#9733;</span>
+                            <span class="text-warning">&#9734;</span> <!-- Sao chưa đánh giá -->
+                            <span class="text-warning">&#9734;</span>
+                        </div>
+                        <p class="comment-text mb-0">Nội dung bình luận.</p>
+                    </div>
+                </div>
+                <!-- Kết thúc danh sách bình luận -->
             </div>
         </div>
     </div>
