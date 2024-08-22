@@ -225,7 +225,7 @@
                             <!-- Input Image -->
                             <input id="img_poster_@movie.Id" class="d-none" type="file" accept=".jpg, .png, .jpeg" forImage="@movie.Id">
                             <label for="img_poster_@movie.Id">
-                                <img src="@movie.Poster" class="img-thumbnail col-6 mb-3" alt="@movie.Poster">
+                                <img id="img_poster_show_@movie.Id" src="@movie.Poster" class="img-thumbnail col-6 mb-3" forPoster="@movie.Id" alt="@movie.Poster">
                             </label>
 
                             <!-- Accordion -->
@@ -508,9 +508,8 @@
     </script>
 
     <script type="module">
-
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-storage.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-storage.js";
 
         // Firebase configuration
         const firebaseConfig = {
@@ -530,17 +529,22 @@
         const storage = getStorage(app);
 
         // Function to upload file using storage reference
-        function uploadFile(file) {
+        function uploadFile(file, imgElement) {
             const storageRef = ref(storage, `images/${file.name}`);
 
             uploadBytes(storageRef, file)
                 .then((snapshot) => {
                     console.log('Uploaded a blob or file!');
-                    alert('Uploaded a blob or file!')
+                    return getDownloadURL(storageRef); // Lấy URL sau khi upload thành công
+                })
+                .then((downloadURL) => {
+                    console.log('File available at', downloadURL);
+                    alert(`File uploaded successfully!`);
+                    $(imgElement).attr('src', downloadURL); // Cập nhật ảnh sau khi upload thành công
                 })
                 .catch((error) => {
                     console.error('Upload failed:', error);
-                    alert('Upload failed')
+                    alert('Upload failed');
                 });
         }
 
@@ -553,24 +557,24 @@
                 var count = $(`#tbl_episode_${movieId} tbody tr`).length; // Đếm số lượng hàng trong bảng của movie tương ứng
 
                 var newRow = `<tr>
-                                                        <th scope="row">mv${count + 1}</th>
-                                                        <td>${count + 1}</td>
-                                                        <td>
-                                                            <input type="url" class="form-control" checked
-                                                                value="">
-                                                        </td>
-                                                        <td>
-                                                            <input type="date" class="form-control"
-                                                                placeholder="VD: 21-05-2003" value="${getFormattedDate()}" checked>
-                                                        </td>
-                                                        <td>
-                                                            <input type="number" class="form-control"
-                                                                placeholder="VD: 10000 seconds" value="10000" checked />
-                                                        </td>
-                                                        <td>
-                                                            <textarea class="form-control"></textarea>
-                                                        </td>
-                                                    </tr>`;
+                                                                    <th scope="row">mv${count + 1}</th>
+                                                                    <td>${count + 1}</td>
+                                                                    <td>
+                                                                        <input type="url" class="form-control" checked
+                                                                            value="">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="date" class="form-control"
+                                                                            placeholder="VD: 21-05-2003" value="${getFormattedDate()}" checked>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control"
+                                                                            placeholder="VD: 10000 seconds" value="10000" checked />
+                                                                    </td>
+                                                                    <td>
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </td>
+                                                                </tr>`;
 
                 // Thêm dòng mới vào bảng tương ứng
                 $(`#tbl_episode_${movieId} tbody`).append(newRow);
@@ -579,11 +583,17 @@
             //
             $(document).on('change', 'input[type=file]', function () {
                 var file = $(this)[0].files[0];
+                // Tìm thẻ img gần nhất có thuộc tính forPoster
                 if (file && file instanceof File) {
-                    console.log('File selected: ', file);
-                    uploadFile(file); // Gọi hàm uploadFile khi file được chọn
+                    var movieId = $(this).attr('forImage')
+                    var imgElement = $(`#img_poster_show_${movieId}`);
+                    if (!imgElement) console.log(`not found imgElement`)
+                    else {
+                        console.log('File selected: ', file);
+                        uploadFile(file, imgElement); // Gọi hàm uploadFile khi file được chọn
+                    }
                 } else {
-                    console.log('File not found or invalid file!');
+                    alert('File not found or invalid file!')
                 }
             });
 
