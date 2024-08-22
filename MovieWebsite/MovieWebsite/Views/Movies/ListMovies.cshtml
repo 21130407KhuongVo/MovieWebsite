@@ -1,0 +1,29 @@
+﻿@model IEnumerable<MovieWebsite.Models.Movie>
+
+<div class="movie-list">
+    @foreach (var movie in Model)
+    {
+        <div class="movie-item">
+            <img src="@movie.Poster" alt="@movie.Title" class="movie-poster" />
+            <h2>@movie.Title</h2>
+        </div>
+    }
+</div>
+
+<style>
+    .movie-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .movie-item {
+        width: 200px;
+        text-align: center;
+    }
+
+    .movie-poster {
+        width: 100%;
+        height: auto;
+    }
+</style>
