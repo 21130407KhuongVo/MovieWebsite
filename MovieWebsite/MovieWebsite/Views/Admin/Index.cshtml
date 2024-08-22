@@ -233,12 +233,12 @@
                                 <!-- Episodes -->
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" forEposideAll="@movie.Id"
                                                 data-bs-target="#collapse_@movie.Id" aria-expanded="false" aria-controls="collapse_@movie.Id">
                                             Danh sách tập phim
                                         </button>
                                     </h2>
-                                    <div id="collapse_@movie.Id" class="accordion-collapse collapse show"
+                                    <div id="collapse_@movie.Id" class="accordion-collapse collapse"
                                          data-bs-parent="#accordionExample">
                                         <div class="accordion-body position-relative">
                                             <table id="tbl_episode_@movie.Id" class="table">
@@ -253,25 +253,35 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <th scope="row">mv1</th>
-                                                        <td>1</td>
-                                                        <td>
-                                                            <input type="url" class="form-control" checked
-                                                                   value="https://pops.vn/series/doraemon-movie-2024-nobita-va-ban-giao-huong-dia-cau-663c9c71f3aaa20060ed6c00">
-                                                        </td>
-                                                        <td>
-                                                            <input type="date" class="form-control"
-                                                                   placeholder="VD: 21-05-2003" value="2024-05-24" checked>
-                                                        </td>
-                                                        <td>
-                                                            <input type="number" class="form-control"
-                                                                   placeholder="VD: 10000 seconds" value=" 10000" checked />
-                                                        </td>
-                                                        <td>
-                                                            <textarea class="form-control"></textarea>
-                                                        </td>
-                                                    </tr>
+                                                    @for (int i = 0; i < 10; i++)
+                                                    {
+                                                        <tr>
+                                                            <th scope="row">mv @i</th>
+                                                            <td>@i</td>
+                                                            <td id="td_@movie.Id@i" class="position-relative" style="max-width:300px">
+                                                                <span class="form-control overflow-auto">
+                                                                    "https://pops.vn/series/doraemon-movie-2024-nobita-va-ban-giao-huong-dia-cau-663c9c71f3aaa20060ed6c00"
+                                                                </span>
+                                                                <input id="inp_@movie.Id@i" type="file" accept=".mp4, .mov, .wmv" class="d-none" checked>
+                                                                <label class="position-absolute top-50 end-0 translate-middle" for="inp_@movie.Id@i" forAddEpisode="@movie.Id">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                                                                        <path fill="currentColor" d="M11 17H7q-2.075 0-3.537-1.463T2 12t1.463-3.537T7 7h4v2H7q-1.25 0-2.125.875T4 12t.875 2.125T7 15h4zm-3-4v-2h8v2zm5 4v-2h4q1.25 0 2.125-.875T20 12t-.875-2.125T17 9h-4V7h4q2.075 0 3.538 1.463T22 12t-1.463 3.538T17 17z" />
+                                                                    </svg>
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <input type="date" class="form-control"
+                                                                       placeholder="VD: 21-05-2003" value="2024-05-24" checked>
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" class="form-control"
+                                                                       placeholder="VD: 10000 seconds" value=" 10000" checked />
+                                                            </td>
+                                                            <td>
+                                                                <textarea class="form-control"></textarea>
+                                                            </td>
+                                                        </tr>
+                                                    }
                                                 </tbody>
                                             </table>
                                             <button id="btn_addRowEpisode_@movie.Id" type="button" data-bs-toggle="tooltip" data-bs-title="Thêm tập phim mới cho '@movie.Title'"
@@ -548,6 +558,26 @@
                 });
         }
 
+        // Fuction to upload video using storage reference
+        function uploadVideo(file, spanE) {
+            const storageRef = ref(storage, `Videos/${file.name}`)
+
+            uploadBytes(storageRef, file)
+                .then((snapshot) => {
+                    console.log('Uploaded a blob or file!');
+                    return getDownloadURL(storageRef); // Lấy URL sau khi upload thành công
+                })
+                .then((downloadURL) => {
+                    console.log('File available at', downloadURL);
+                    alert(`File uploaded successfully!`);
+                    $(spanE).text(downloadURL)
+                })
+                .catch((error) => {
+                    console.error('Upload failed:', error);
+                    alert('Upload failed');
+                })
+        }
+
         $(document).ready(function () {
 
             // Đăng ký sự kiện cho các nút "Thêm tập phim"
@@ -557,33 +587,32 @@
                 var count = $(`#tbl_episode_${movieId} tbody tr`).length; // Đếm số lượng hàng trong bảng của movie tương ứng
 
                 var newRow = `<tr>
-                                                                    <th scope="row">mv${count + 1}</th>
-                                                                    <td>${count + 1}</td>
-                                                                    <td>
-                                                                        <input type="url" class="form-control" checked
-                                                                            value="">
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="date" class="form-control"
-                                                                            placeholder="VD: 21-05-2003" value="${getFormattedDate()}" checked>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="number" class="form-control"
-                                                                            placeholder="VD: 10000 seconds" value="10000" checked />
-                                                                    </td>
-                                                                    <td>
-                                                                        <textarea class="form-control"></textarea>
-                                                                    </td>
-                                                                </tr>`;
+                                                                                            <th scope="row">mv${count + 1}</th>
+                                                                                            <td>${count + 1}</td>
+                                                                                            <td>
+                                                                                                <input type="url" class="form-control" checked
+                                                                                                    value="">
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <input type="date" class="form-control"
+                                                                                                    placeholder="VD: 21-05-2003" value="${getFormattedDate()}" checked>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <input type="number" class="form-control"
+                                                                                                    placeholder="VD: 10000 seconds" value="10000" checked />
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <textarea class="form-control"></textarea>
+                                                                                            </td>
+                                                                                        </tr>`;
 
                 // Thêm dòng mới vào bảng tương ứng
                 $(`#tbl_episode_${movieId} tbody`).append(newRow);
             });
 
             //
-            $(document).on('change', 'input[type=file]', function () {
+            $(document).on('change', 'input[type=file][accept=".mp4, .mov, .wmv"]', function () {
                 var file = $(this)[0].files[0];
-                // Tìm thẻ img gần nhất có thuộc tính forPoster
                 if (file && file instanceof File) {
                     var movieId = $(this).attr('forImage')
                     var imgElement = $(`#img_poster_show_${movieId}`);
@@ -603,6 +632,28 @@
                 console.log('button SaveChange on click with Movie.Id: ', movieId)
 
                 $(`form#movie_detail_${movieId}`).submit()
+            })
+
+            // dang ky su kien cho nut upload episode
+            $(document).on('change', 'input[type=file][accept=".mp4, .mov, .wmv"]', function () {
+                var file = $(this)[0].files[0];
+                if (file && file instanceof File) {
+                    var movieId = $(this).attr('forAddEpisode')
+                    var parent = $(this).closest(`td`)
+                    var spanE = parent.find('span')
+                    if (!spanE) console.log(`not found spanE`)
+                    else {
+                        console.log('File selected: ', file);
+                        uploadVideo(file, spanE); // Gọi hàm uploadFile khi file được chọn
+                    }
+                } else {
+                    alert('File not found or invalid file!')
+                }
+            })
+
+            // lazyloading episodes
+            $(document).on('click', 'button[type="button"][data-bs-toggle="collapse"]', function () {
+                if($(this).)
             })
         });
 
