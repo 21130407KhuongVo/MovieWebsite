@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model MovieApp.Controllers.HomeViewModel
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -203,7 +204,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 col-12">
                 <div class="section-title-wrap mb-5">
-                    <h4 class="section-title">Tiêu Đề</h4>
+                    <h4 class="section-title">@Model.Movie.Title</h4>
                 </div>
 
                 <div class="movie-video-wrap">
@@ -228,7 +229,7 @@
                         <img src="avatar-url.jpg" class="img-fluid rounded-circle" alt="Avatar">
                     </div>
                     <div class="comment-content ms-3">
-                        <h5 class="comment-author mb-1">Tên người dùng</h5>
+                        <h5 class="comment-author mb-1">@Model</h5>
                         <div class="comment-rating mb-1">
                             <!-- Đánh giá sao -->
                             <span class="text-warning">&#9733;</span> <!-- Sao đã đánh giá -->
@@ -237,7 +238,7 @@
                             <span class="text-warning">&#9734;</span> <!-- Sao chưa đánh giá -->
                             <span class="text-warning">&#9734;</span>
                         </div>
-                        <p class="comment-text mb-0">Nội dung bình luận.</p>
+                        <p class="comment-text mb-0"></p>
                     </div>
                 </div>
                 <!-- Kết thúc danh sách bình luận -->
