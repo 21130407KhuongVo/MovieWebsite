@@ -9,6 +9,7 @@ namespace MovieWebsite.Controllers
 {
     public class AdminController : Controller
     {
+        static string baseUrl = "https://localhost:7271";
 
         // GET: /Admin/Index
         public async Task<IActionResult> Index()
@@ -47,6 +48,21 @@ namespace MovieWebsite.Controllers
 
             return View(model);
         }
+
+        public async Task<List<Episode>> GetEpisodesAsync(Guid movieId)
+        {
+            List<Episode> episodes = new List<Episode>();
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{baseUrl}/api/{movieId}/episode"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    episodes = JsonConvert.DeserializeObject<List<Episode>>(apiResponse);
+                }
+            }
+            return episodes;
+        }
     }
 
     public class AdminViewModel
@@ -56,5 +72,7 @@ namespace MovieWebsite.Controllers
         public List<SelectListItem> VisibleListItem { get; set; }
         public string SelectedAge { get; set; }
         public string baseURL = "https://localhost:7271";
+        public List<Episode> episodes { get; set; }
     }
+
 }
