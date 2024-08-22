@@ -7,6 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Views\Home\MovieDetails.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Include="wwwroot\js\.DS_Store" />
 	</ItemGroup>
 
