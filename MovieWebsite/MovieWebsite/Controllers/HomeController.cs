@@ -3,7 +3,6 @@ using MovieWebsite.Data;
 using MovieWebsite.Models;
 using System.Diagnostics;
 
-
 namespace MovieApp.Controllers
 {
 	public class HomeController : Controller
@@ -11,6 +10,7 @@ namespace MovieApp.Controllers
 		private readonly ILogger<HomeController> _logger;
 
 		public Movies Movie { get; private set; }
+		public Episode Episode { get; private set; }
 
 		public HomeController(ILogger<HomeController> logger)
 		{
@@ -26,6 +26,7 @@ namespace MovieApp.Controllers
 		{
 			return View();
 		}
+
 		public IActionResult About()
 		{
 			return View();
@@ -43,20 +44,23 @@ namespace MovieApp.Controllers
 
 			var movie = await GetMovieFromApiAsync(moviesId);
 			var comments = await GetCommentsFromApiAsync(moviesId);
+			var episodes = await GetEpisodesFromApiAsync(moviesId); // Fetch the list of episodes
 
-			_logger.LogInformation("Fetched comments: {Comments}", comments); // Kiểm tra giá trị comments
+			// Get the source of the first episode, if it exists
+			var firstEpisodeSource = episodes?.FirstOrDefault()?.Source ?? string.Empty;
 
 			var model = new HomeViewModel
 			{
 				Id = moviesId,
 				baseURL = "https://localhost:7271",
 				Movie = movie ?? new Movies(),
-				Comments = comments ?? new List<Comment>() // Đảm bảo không có giá trị null
+				Comments = comments ?? new List<Comment>(),
+				EpisodeSource = firstEpisodeSource, // Use the source from the first episode
+				Episodes = episodes // Pass the list of episodes to the view model
 			};
 
 			return View(model);
 		}
-
 
 		private async Task<Movies> GetMovieFromApiAsync(Guid moviesId)
 		{
@@ -70,22 +74,18 @@ namespace MovieApp.Controllers
 					if (response.IsSuccessStatusCode)
 					{
 						var movieData = await response.Content.ReadFromJsonAsync<Movies>();
-
-						// Log để kiểm tra giá trị của Url
 						_logger.LogInformation("Movie Url: {Url}", movieData.Url);
-
 						return movieData;
 					}
 					else
 					{
-						// Xử lý khi không lấy được dữ liệu
 						return null;
 					}
 				}
 			}
 			catch (Exception ex)
 			{
-				// Xử lý lỗi
+				_logger.LogError(ex, "Error fetching movie");
 				return null;
 			}
 		}
@@ -96,35 +96,66 @@ namespace MovieApp.Controllers
 			{
 				using (var client = new HttpClient())
 				{
-					client.BaseAddress = new Uri("https://localhost:7271/api/comments/");
-					var response = await client.GetAsync($"{moviesId}");
+					client.BaseAddress = new Uri("https://localhost:7271/api/");
+					var response = await client.GetAsync($"{moviesId}/comment");
 
 					if (response.IsSuccessStatusCode)
 					{
 						var commentsData = await response.Content.ReadFromJsonAsync<List<Comment>>();
-						return commentsData ?? new List<Comment>(); // Đảm bảo trả về danh sách rỗng nếu không có dữ liệu
+						_logger.LogInformation("Fetched comments: {Comments}", commentsData); // Log fetched comments
+						return commentsData ?? new List<Comment>(); // Return the comments
 					}
 					else
 					{
 						_logger.LogWarning("Failed to fetch comments: {StatusCode}", response.StatusCode);
-						return new List<Comment>(); // Trả về danh sách rỗng nếu không thành công
+						return new List<Comment>(); // Return an empty list if failed
 					}
 				}
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Error fetching comments");
-				return new List<Comment>(); // Trả về danh sách rỗng nếu có lỗi
+				return new List<Comment>(); // Return an empty list in case of error
 			}
 		}
 
-		public class HomeViewModel
-		{
-			public string baseURL { get; set; } = "https://localhost:7271";
-			public Guid Id { get; set; }
-			public Movies Movie { get; set; } = new Movies();
-			public List<Comment> Comments { get; set; } = new List<Comment>();
-		}
 
+		private async Task<List<Episode>> GetEpisodesFromApiAsync(Guid moviesId)
+		{
+			try
+			{
+				using (var client = new HttpClient())
+				{
+					client.BaseAddress = new Uri("https://localhost:7271/api/");
+					var response = await client.GetAsync($"{moviesId}/episode");
+
+					if (response.IsSuccessStatusCode)
+					{
+						var episodesData = await response.Content.ReadFromJsonAsync<List<Episode>>();
+						return episodesData ?? new List<Episode>();
+					}
+					else
+					{
+						_logger.LogWarning("Failed to fetch episodes: {StatusCode}", response.StatusCode);
+						return new List<Episode>();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Error fetching episodes");
+				return new List<Episode>();
+			}
+		}
+	}
+
+	public class HomeViewModel
+	{
+		public string baseURL { get; set; } = "https://localhost:7271";
+		public Guid Id { get; set; }
+		public Movies Movie { get; set; } = new Movies();
+		public List<Comment> Comments { get; set; } = new List<Comment>();
+		public string EpisodeSource { get; set; } // This will hold the source of the first episode for the iframe
+		public List<Episode> Episodes { get; set; } = new List<Episode>(); // This will hold the list of episodes
 	}
 }

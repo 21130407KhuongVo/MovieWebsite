@@ -39,6 +39,10 @@
 			color: #ccc;
 			cursor: pointer;
 		}
+		.comment-avatar {
+			width:30px;
+			height:30px;
+		}
 		#rating input:checked ~ label {
 			color: #f39c12;
 		}
@@ -66,62 +70,84 @@
 						<div class="section-title-wrap mb-5">
 							<h4 class="section-title">@Model.Movie.Title</h4>
 						</div>
-						@if (!string.IsNullOrEmpty(Model.EpisodeUrl))
+						@if (!string.IsNullOrEmpty(Model.Movie.Title))
 						{
+							@foreach (var episode in Model.Episodes)
+							{
 								<div class="movie-video-wrap">
 									<div class="embed-responsive embed-responsive-16by9">
-										<iframe class="embed-responsive-item" src="@Model.EpisodeUrl" allowfullscreen></iframe>
+										<iframe class="embed-responsive-item" src="@episode.Source" allowfullscreen></iframe>
 									</div>
 								</div>
+
+							}
+
 						}
 						else
 						{
-								<p>Link phim không khả dụng.</p>
+							<p>Link phim không khả dụng.</p>
+						
 						}
+
 					</div>
 				</div>
 			</div>
 		</section>
+<section class="comments-section section-padding">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-10 col-12">
+				<div class="section-title-wrap mb-5">
+					<h4 class="section-title">Bình Luận</h4>
+				</div>
 
-		<!-- Review Form Section -->
-		<section class="review-form-section section-padding">
-			<div class="container">
-				<div class="row justify-content-center">
-					<div class="col-lg-10 col-12">
-						<div class="section-title-wrap mb-5">
-							<h4 class="section-title">Đánh giá</h4>
-						</div>
-
-						<!-- Add id="reviewForm" to the form element -->
-						<form id="reviewForm" action="@Model.baseURL/api/rating" method="post">
-							<input type="hidden" name="movieId" value="@Model.Id" />
-							<div class="form-group">
-								<!-- Star Rating Input -->
-								<label for="rating" class="form-label">Đánh giá</label>
-								<div id="rating" class="mb-3">
-									<input type="radio" name="rating" id="star5" value="5"><label for="star5" class="star">&#9733;</label>
-									<input type="radio" name="rating" id="star4" value="4"><label for="star4" class="star">&#9733;</label>
-									<input type="radio" name="rating" id="star3" value="3"><label for="star3" class="star">&#9733;</label>
-									<input type="radio" name="rating" id="star2" value="2"><label for="star2" class="star">&#9733;</label>
-									<input type="radio" name="rating" id="star1" value="1"><label for="star1" class="star">&#9733;</label>
+				<!-- Bắt đầu danh sách bình luận -->
+						@if (Model.Comments != null && Model.Comments.Any())
+						{
+							@foreach (var comment in Model.Comments)
+							{
+								<div class="comment-item d-flex mb-4">
+									<div class="comment-avatar">
+												<img src="~/images/profile/cute-smiling-woman-outdoor-portrait.jpg" class="img-fluid rounded-circle" alt="Avatar">
+									</div>
+									<div class="comment-content ms-3">
+										<h5 class="comment-author mb-1">@comment.Author</h5>
+										<div class="comment-rating mb-1">
+											@for (int i = 0; i < 5; i++)
+											{
+												if (i < comment.Rating)
+												{
+															<span class="text-warning">&#9733;</span> <!-- Rated star -->
+												}
+												else
+												{
+															<span class="text-warning">&#9734;</span> <!-- Unrated star -->
+												}
+											}
+										</div>
+										<p class="comment-text mb-0">@comment.Content</p>
+									</div>
 								</div>
-							</div>
-
-							<div class="form-group">
-								<!-- Rich Text Editor -->
-								<label for="comment" class="form-label">Nhận xét</label>
-								<textarea id="comment" name="comment" class="form-control" rows="5" placeholder="Viết nhận xét của bạn..."></textarea>
-							</div>
-
-							<div class="form-group mt-3">
-								<!-- Submit Button -->
-								<button type="submit" class="btn btn-primary">Xác nhận</button>
-							</div>
-						</form>
-					</div>
-				</div>
+							}
+						}
+						else
+						{
+						<p>Không có bình luận nào.</p>
+						}
+				<!-- Kết thúc danh sách bình luận -->
 			</div>
-		</section>
+		</div>
+	</div>
+</section>
+
+						
+<!-- Kết thúc danh sách bình luận -->
+				}
+			</div>
+		</div>
+	</div>
+</section>
+
 
 		<!-- Comments Section omitted for brevity -->
 
