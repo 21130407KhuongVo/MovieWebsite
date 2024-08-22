@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MovieWebsite.Model.DomainModel;
+using MovieWebsite.Models.DomainModel;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text.Json;
@@ -45,6 +46,19 @@ namespace MovieWebsite.Controllers
             }
 
             model.MovieList = movies;
+            //list user
+            List<User> users = new List<User>();
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{model.baseURL}/api/auth/users"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    users = JsonConvert.DeserializeObject<List<User>>(apiResponse);
+                }
+            }
+
+            model.UserList = users;
 
             return View(model);
         }
@@ -68,6 +82,7 @@ namespace MovieWebsite.Controllers
     public class AdminViewModel
     {
         public List<Movies> MovieList { get; set; }
+        public List<User> UserList { get; set; }
         public List<SelectListItem> AgeSelectListItems { get; set; }
         public List<SelectListItem> VisibleListItem { get; set; }
         public string SelectedAge { get; set; }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+
 using MovieWebsite.Data;
 using MovieWebsite.Model.DomainModel;
+
 using MovieWebsite.Models;
 using System.Diagnostics;
 using System.Xml.Linq;
