@@ -60,5 +60,6 @@ namespace MovieWebsite.Controllers
         public List<SelectListItem> AgeSelectListItems { get; set; }
         public List<SelectListItem> VisibleListItem { get; set; }
         public string SelectedAge { get; set; }
+        public string baseURL = "https://localhost:7271";
     }
 }
