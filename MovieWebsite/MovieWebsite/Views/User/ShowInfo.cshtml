@@ -1,0 +1,104 @@
+﻿@model MovieWebsite.Models.DomainModel.User
+
+@{
+    ViewBag.Title = "Thông tin người dùng";
+}
+
+<h3 style="margin-top:150px">Thông tin người dùng</h3>
+
+<div>
+    <p><strong>Tên:</strong> <span id="displayName">@Model.Name</span></p>
+    <p><strong>Email:</strong> <span id="displayEmail">@Model.Email</span></p>
+    <p><strong>Số điện thoại:</strong> <span id="displayPhoneNumber">@Model.PhoneNumber</span></p>
+</div>
+
+<button id="editButton">Chỉnh sửa thông tin</button>
+
+<div id="editForm" class="mb-4" style="display:none; margin-top: 20px;">
+    <form id="updateForm">
+        <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+
+        <div class="form-group">
+            <label for="Name">Tên:</label>
+            <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" required />
+        </div>
+
+        <div class="form-group">
+            <label for="Email">Email:</label>
+            <input type="email" id="Email" name="Email" class="form-control" value="@Model.Email" required />
+        </div>
+
+        <div class="form-group">
+            <label for="PhoneNumber">Số điện thoại:</label>
+            <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" required />
+        </div>
+
+        <div class="form-group">
+            <label for="BirthDate">Ngày sinh:</label>
+            <input type="date" id="BirthDate" name="BirthDate" class="form-control" value="@Model.BirthDate?.ToString("yyyy-MM-dd")" />
+        </div>
+
+        <div class="form-group">
+            <label for="Password">Mật khẩu mới (nếu thay đổi):</label>
+            <input type="password" id="Password" name="Password" class="form-control" placeholder="Nhập mật khẩu mới" />
+        </div>
+
+        <button type="button" id="saveButton" class="btn btn-primary">Lưu</button>
+        <button type="button" id="cancelButton" class="btn btn-secondary">Hủy</button>
+    </form>
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success" role="alert" style="margin-top: 20px;">
+        @ViewBag.Message
+    </div>
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#editButton").click(function () {
+                $("#editForm").show();
+                $(this).hide();
+            });
+
+            $("#cancelButton").click(function () {
+                $("#editForm").hide();
+                $("#editButton").show();
+            });
+
+            $("#saveButton").click(function () {
+                var formData = {
+                    Id: $("#Id").val(),
+                    Name: $("#Name").val(),
+                    Email: $("#Email").val(),
+                    PhoneNumber: $("#PhoneNumber").val(),
+                    BirthDate: $("#BirthDate").val(),
+                    Password: $("#Password").val()
+                };
+
+                $.ajax({
+                    url: '@Url.Action("UpdateUser", "User")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        // Cập nhật dữ liệu hiển thị
+                        $("#displayName").text(formData.Name);
+                        $("#displayEmail").text(formData.Email);
+                        $("#displayPhoneNumber").text(formData.PhoneNumber);
+                        // Ẩn form và hiển thị nút chỉnh sửa
+                        $("#editForm").hide();
+                        $("#editButton").show();
+                        $(".alert").text("Thông tin đã được cập nhật!");
+                    },
+                    error: function (xhr) {
+                        $(".alert").text("Cập nhật thông tin thất bại!");
+                    }
+                });
+            });
+        });
+    </script>
+}
