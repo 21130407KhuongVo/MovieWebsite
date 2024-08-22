@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using MovieWebsite.Model.DomainModel;
-using System.Net.Http;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace MovieWebsite.Controllers
 {
@@ -13,27 +11,34 @@ namespace MovieWebsite.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ListMovies()
-
+        public async Task<IActionResult> ListMovies(string search = null)
         {
-            var model = new AdminViewModel();
+            var model = new MoviesViewModel();
             List<Movies> movies = new List<Movies>();
+
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync($"{model.baseURL}/api/movie"))
+                string url = string.IsNullOrEmpty(search)
+                    ? $"{model.baseURL}/api/movie"
+                    : $"{model.baseURL}/api/movie/search?name={Uri.EscapeDataString(search)}";
+
+                using (var response = await httpClient.GetAsync(url))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    movies = 
+                    movies = JsonConvert.DeserializeObject<List<Movies>>(apiResponse);
                 }
             }
 
             model.MovieList = movies;
-            // Implement your logic here
-            return View();
+
+            return View(model);
         }
+
     }
+
     public class MoviesViewModel
     {
+        public List<Movies> MovieList { get; set; }
         public Movies Movies { get; set; }
         public string baseURL = "https://localhost:7271";
     }

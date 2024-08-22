@@ -1,29 +1,127 @@
-﻿@model IEnumerable<MovieWebsite.Models.Movie>
+﻿@model MovieWebsite.Controllers.MoviesViewModel
 
-<div class="movie-list">
-    @foreach (var movie in Model)
-    {
-        <div class="movie-item">
-            <img src="@movie.Poster" alt="@movie.Title" class="movie-poster" />
-            <h2>@movie.Title</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        body {
+            padding-top: 100px; /* Thay đổi theo chiều cao của navbar */
+        }
+
+        .navbar {
+            z-index: 1000; /* Đảm bảo navbar nằm trên các phần tử khác */
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s;
+            height: 100%; /* Đảm bảo card chiếm toàn bộ chiều cao của cột */
+        }
+
+            .card:hover {
+                transform: scale(1.05);
+            }
+
+        .card-img-top {
+            height: 200px; /* Kích thước cố định cho hình ảnh */
+            object-fit: cover; /* Cắt ảnh sao cho phù hợp với kích thước */
+        }
+
+        .card-body {
+            text-align: center; /* Căn giữa nội dung trong card */
+        }
+
+        .card-title {
+            font-family: 'Roboto', sans-serif; /* Sử dụng font từ Google Fonts */
+            font-size: 1.25rem; /* Kích thước chữ */
+            font-weight: bold; /* Định dạng chữ đậm */
+            color: #333; /* Màu chữ */
+            margin-bottom: 0; /* Loại bỏ margin dưới tiêu đề */
+        }
+
+
+        .age-rating {
+            background-color: #FFD700; /* Nền tối với độ trong suốt */
+            color: white; /* Màu chữ trắng */
+            padding: 5px 10px; /* Khoảng cách bên trong */
+            border-radius: 5px; /* Bo tròn các góc */
+            position: absolute; /* Định vị hình chữ nhật trên hình ảnh */
+            top: 10px; /* Khoảng cách từ cạnh trên của phần tử chứa */
+            left: 10px; /* Khoảng cách từ cạnh trái của phần tử chứa */
+            font-size: 14px; /* Kích thước chữ */
+            font-weight: bold; /* Chữ đậm */
+            text-align: center; /* Canh giữa chữ */
+            z-index: 10; /* Đảm bảo hình chữ nhật nằm trên hình ảnh */
+        }
+
+
+    </style>
+
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row" id="movie-list">
+            @if (Model.MovieList != null && Model.MovieList.Any())
+            {
+                foreach (var movie in Model.MovieList)
+                {
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <div class="card-img-container position-relative">
+                                <img src="@movie.Poster" alt="@movie.Title" class="card-img-top">
+                                <div class="age-rating position-absolute">
+                                    @movie.AgeRating
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@movie.Title</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-center">No movies found.</p>
+            }
         </div>
-    }
-</div>
+    </div>
 
-<style>
-    .movie-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchName = urlParams.get('name');
 
-    .movie-item {
-        width: 200px;
-        text-align: center;
-    }
-
-    .movie-poster {
-        width: 100%;
-        height: auto;
-    }
-</style>
+            if (searchName) {
+                fetch(`/api/search?name=${encodeURIComponent(searchName)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const movieList = document.getElementById('movie-list');
+                        if (data.length > 0) {
+                            movieList.innerHTML = data.map(movie => `
+                                        <div class="col-md-3 mb-4">
+                                            <div class="card">
+                                                <img src="${movie.poster}" alt="${movie.title}" class="card-img-top">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${movie.title}</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `).join('');
+                        } else {
+                            movieList.innerHTML = '<p class="text-center">No movies found.</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
