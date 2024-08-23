@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
 using MovieWebsite.Models.DomainModel;
 using Newtonsoft.Json;
 using System.Net.Http;
+using Microsoft.AspNetCore.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -61,7 +63,44 @@ namespace MovieWebsite.Controllers
                 }
             }
         }
+       
+        // [HttpPost]
+        //public async Task<IActionResult> Login(LoginRequest loginRequest)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        ViewBag.Message = "Dữ liệu không hợp lệ!";
+        //        return View(loginRequest);
+        //    }
 
+        //    using (var httpClient = new HttpClient())
+        //    {
+        //        var loginUrl = "https://localhost:7271/api/auth/login";
+
+        //        var json = JsonConvert.SerializeObject(loginRequest);
+        //        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        //        var response = await httpClient.PostAsync(loginUrl, content);
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var apiResponse = await response.Content.ReadAsStringAsync();
+        //            var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(apiResponse);
+
+        //            // Lưu trạng thái đăng nhập vào session
+        //            HttpContext.Session.SetString("IsLoggedIn", "true");
+
+        //            // Chuyển hướng đến trang chính sau khi đăng nhập thành công
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        else
+        //        {
+        //            ViewBag.Message = "Email hoặc mật khẩu không chính xác!";
+        //        }
+        //    }
+
+        //    return View(loginRequest);
+        //}
 
     }
 }
